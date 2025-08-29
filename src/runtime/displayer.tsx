@@ -2,6 +2,7 @@ import { React, polished, type IMExpression, ExpressionResolverComponent, expres
 import { DownDoubleOutlined } from 'jimu-icons/outlined/directional/down-double'
 import { styled, useTheme } from 'jimu-theme'
 import { RichTextDisplayer, type RichTextDisplayerProps, Scrollable, type ScrollableRefProps, type StyleSettings, type StyleState, styleUtils } from 'jimu-ui'
+import { Speedometer } from './speedometer'
 
 const LeaveDelay = 500
 
@@ -113,6 +114,11 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
   const isTextTooltip = expressionUtils.isSingleStringExpression(tooltip as any)
   const [tooltipText, setTooltipText] = React.useState('')
 
+  const speed = React.useMemo(() => {
+    const match = value.match(/-?\d+(\.\d+)?/)
+    return match ? parseFloat(match[0]) : null
+  }, [value])
+
   const [fadeLength, setFadeLength] = React.useState('24px')
   const [bottoming, setBottoming] = React.useState(false)
   const [scrollable, setScrollable] = React.useState(false)
@@ -189,6 +195,7 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
           placeholder={placeholder}
         />
       </Scrollable>
+      {speed !== null && <Speedometer value={speed} />}
       {showFade && scrollable && !bottoming && <div className='text-fade text-fade-bottom'>
         <span className='arrow arrow-bottom rounded-circle mr-1'>
           <DownDoubleOutlined className='bounce' color={theme?.ref.palette?.black} />
