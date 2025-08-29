@@ -11,6 +11,7 @@ export type DisplayerProps = Omit<RichTextDisplayerProps, 'sanitize'> & {
   wrap?: boolean
   dynamicStyleConfig?: IMDynamicStyleConfig
   onArcadeChange?: (style: React.CSSProperties) => void
+  showSpeedometer?: boolean
 }
 
 const Root = styled('div')<StyleState<{ wrap: boolean, fadeLength: string }>>(({ theme, styleState }) => {
@@ -104,6 +105,7 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
     tooltip,
     dynamicStyleConfig,
     onArcadeChange,
+    showSpeedometer = true,
     ...others
   } = props
 
@@ -194,6 +196,7 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
           value={value}
           placeholder={placeholder}
         />
+        {showSpeedometer && speed !== null && <Speedometer value={speed} />}
       </Scrollable>
       {speed !== null && <Speedometer value={speed} />}
       {showFade && scrollable && !bottoming && <div className='text-fade text-fade-bottom'>
