@@ -45,6 +45,7 @@ const Setting = (props: SettingProps): React.ReactElement => {
   const placeholderEditable = getAppStore().getState().appStateInBuilder?.appInfo?.type === 'Web Experience Template'
   const style = propConfig.style
   const wrap = style?.wrap ?? true
+  const showSpeedometer = propConfig.showSpeedometer ?? true
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
@@ -124,6 +125,13 @@ const Setting = (props: SettingProps): React.ReactElement => {
     onSettingChange({
       id,
       config: propConfig.setIn(['style', 'wrap'], !wrap)
+    })
+  }
+
+  const toggleSpeedometer = (): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('showSpeedometer', !showSpeedometer)
     })
   }
 
@@ -214,6 +222,9 @@ const Setting = (props: SettingProps): React.ReactElement => {
         {placeholderEditable && <SettingRow flow='wrap' label={translate('placeholder')}>
           <TextArea aria-label={translate('placeholder')} defaultValue={placeholderText} onAcceptValue={handlePlaceholderTextChange}></TextArea>
         </SettingRow>}
+        <SettingRow flow='no-wrap' tag='label' label={translate('showSpeedometer')}>
+          <Switch checked={showSpeedometer} onChange={toggleSpeedometer} />
+        </SettingRow>
 
       </SettingSection>
 

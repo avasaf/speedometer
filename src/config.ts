@@ -17,6 +17,7 @@ export interface Config {
   text: string
   style?: Style
   tooltip?: Expression
+  showSpeedometer?: boolean
 }
 
 export type IMConfig = ImmutableObject<Config>
