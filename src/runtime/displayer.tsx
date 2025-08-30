@@ -12,6 +12,8 @@ export type DisplayerProps = Omit<RichTextDisplayerProps, 'sanitize'> & {
   dynamicStyleConfig?: IMDynamicStyleConfig
   onArcadeChange?: (style: React.CSSProperties) => void
   showSpeedometer?: boolean
+  speedometerGaugeColor?: string
+  speedometerNeedleColor?: string
 }
 
 const Root = styled('div')<StyleState<{ wrap: boolean, fadeLength: string }>>(({ theme, styleState }) => {
@@ -106,6 +108,8 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
     dynamicStyleConfig,
     onArcadeChange,
     showSpeedometer = true,
+    speedometerGaugeColor,
+    speedometerNeedleColor,
     ...others
   } = props
 
@@ -120,6 +124,13 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
     const match = value.match(/-?\d+(\.\d+)?/)
     return match ? parseFloat(match[0]) : null
   }, [value])
+
+  const displayValue = React.useMemo(() => {
+    if (showSpeedometer && speed !== null) {
+      return value.replace(/-?\d+(\.\d+)?\s*knt?/i, '').trim()
+    }
+    return value
+  }, [value, showSpeedometer, speed])
 
   const [fadeLength, setFadeLength] = React.useState('24px')
   const [bottoming, setBottoming] = React.useState(false)
@@ -193,10 +204,16 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
           widgetId={widgetId}
           repeatedDataSource={repeatedDataSource}
           useDataSources={useDataSources}
-          value={value}
+          value={displayValue}
           placeholder={placeholder}
         />
-        {showSpeedometer && speed !== null && <Speedometer value={speed} />}
+        {showSpeedometer && speed !== null && (
+          <Speedometer
+            value={speed}
+            gaugeColor={speedometerGaugeColor}
+            needleColor={speedometerNeedleColor}
+          />
+        )}
       </Scrollable>
       {speed !== null && <Speedometer value={speed} />}
       {showFade && scrollable && !bottoming && <div className='text-fade text-fade-bottom'>

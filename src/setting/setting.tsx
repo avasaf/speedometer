@@ -3,7 +3,7 @@ import { builderAppSync, type AllWidgetSettingProps } from 'jimu-for-builder'
 import { SettingRow, SettingSection } from 'jimu-ui/advanced/setting-components'
 import { RichTextFormatKeys, type Editor } from 'jimu-ui/advanced/rich-text-editor'
 import type { IMConfig } from '../config'
-import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea } from 'jimu-ui'
+import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea, ColorPicker } from 'jimu-ui'
 import { DataSourceSelector } from 'jimu-ui/advanced/data-source-selector'
 import defaultMessages from './translations/default'
 import { ExpressionInput, ExpressionInputType } from 'jimu-ui/advanced/expression-builder'
@@ -46,6 +46,8 @@ const Setting = (props: SettingProps): React.ReactElement => {
   const style = propConfig.style
   const wrap = style?.wrap ?? true
   const showSpeedometer = propConfig.showSpeedometer ?? true
+  const gaugeColor = propConfig.speedometerGaugeColor ?? '#ccc'
+  const needleColor = propConfig.speedometerNeedleColor ?? 'red'
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
@@ -132,6 +134,20 @@ const Setting = (props: SettingProps): React.ReactElement => {
     onSettingChange({
       id,
       config: propConfig.set('showSpeedometer', !showSpeedometer)
+    })
+  }
+
+  const handleGaugeColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerGaugeColor', color)
+    })
+  }
+
+  const handleNeedleColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerNeedleColor', color)
     })
   }
 
@@ -225,6 +241,14 @@ const Setting = (props: SettingProps): React.ReactElement => {
         <SettingRow flow='no-wrap' tag='label' label={translate('showSpeedometer')}>
           <Switch checked={showSpeedometer} onChange={toggleSpeedometer} />
         </SettingRow>
+        {showSpeedometer && <>
+          <SettingRow flow='no-wrap' label={translate('gaugeColor')}>
+            <ColorPicker color={gaugeColor} onChange={handleGaugeColorChange} />
+          </SettingRow>
+          <SettingRow flow='no-wrap' label={translate('needleColor')}>
+            <ColorPicker color={needleColor} onChange={handleNeedleColorChange} />
+          </SettingRow>
+        </>}
 
       </SettingSection>
 
