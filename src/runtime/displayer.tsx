@@ -2,6 +2,7 @@ import { React, polished, type IMExpression, ExpressionResolverComponent, expres
 import { DownDoubleOutlined } from 'jimu-icons/outlined/directional/down-double'
 import { styled, useTheme } from 'jimu-theme'
 import { RichTextDisplayer, type RichTextDisplayerProps, Scrollable, type ScrollableRefProps, type StyleSettings, type StyleState, styleUtils } from 'jimu-ui'
+import { Speedometer } from './speedometer'
 
 const LeaveDelay = 500
 
@@ -10,6 +11,9 @@ export type DisplayerProps = Omit<RichTextDisplayerProps, 'sanitize'> & {
   wrap?: boolean
   dynamicStyleConfig?: IMDynamicStyleConfig
   onArcadeChange?: (style: React.CSSProperties) => void
+  showSpeedometer?: boolean
+  speedometerGaugeColor?: string
+  speedometerNeedleColor?: string
 }
 
 const Root = styled('div')<StyleState<{ wrap: boolean, fadeLength: string }>>(({ theme, styleState }) => {
@@ -103,6 +107,9 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
     tooltip,
     dynamicStyleConfig,
     onArcadeChange,
+    showSpeedometer = true,
+    speedometerGaugeColor,
+    speedometerNeedleColor,
     ...others
   } = props
 
@@ -112,6 +119,18 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
   const rootRef = React.useRef<HTMLDivElement>()
   const isTextTooltip = expressionUtils.isSingleStringExpression(tooltip as any)
   const [tooltipText, setTooltipText] = React.useState('')
+
+  const speed = React.useMemo(() => {
+    const match = value.match(/-?\d+(\.\d+)?/)
+    return match ? parseFloat(match[0]) : null
+  }, [value])
+
+  const displayValue = React.useMemo(() => {
+    if (showSpeedometer && speed !== null) {
+      return value.replace(/-?\d+(\.\d+)?\s*knt?/i, '').trim()
+    }
+    return value
+  }, [value, showSpeedometer, speed])
 
   const [fadeLength, setFadeLength] = React.useState('24px')
   const [bottoming, setBottoming] = React.useState(false)
@@ -185,9 +204,16 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
           widgetId={widgetId}
           repeatedDataSource={repeatedDataSource}
           useDataSources={useDataSources}
-          value={value}
+          value={displayValue}
           placeholder={placeholder}
         />
+        {showSpeedometer && speed !== null && (
+          <Speedometer
+            value={speed}
+            gaugeColor={speedometerGaugeColor}
+            needleColor={speedometerNeedleColor}
+          />
+        )}
       </Scrollable>
       {showFade && scrollable && !bottoming && <div className='text-fade text-fade-bottom'>
         <span className='arrow arrow-bottom rounded-circle mr-1'>
