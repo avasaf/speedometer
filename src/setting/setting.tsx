@@ -296,10 +296,10 @@ const Setting = (props: SettingProps): React.ReactElement => {
             <ColorPicker color={textColor} onChange={handleTextColorChange} />
           </SettingRow>
           <SettingRow className='mb-3' flow='no-wrap' label={translate('textFont')}>
-            <TextInput value={localFont} onChange={(_e, v) => setLocalFont(v)} onAcceptValue={handleTextFontAccept} />
+            <TextInput style={{ width: 120 }} value={localFont} onChange={(_e, v) => setLocalFont(v)} onAcceptValue={handleTextFontAccept} />
           </SettingRow>
           <SettingRow className='mb-3' flow='no-wrap' label={translate('textSize')}>
-            <TextInput type='number' value={localSize} onChange={(_e, v) => setLocalSize(v)} onAcceptValue={handleTextSizeAccept} />
+            <TextInput style={{ width: 80 }} type='number' value={localSize} onChange={(_e, v) => setLocalSize(v)} onAcceptValue={handleTextSizeAccept} />
           </SettingRow>
           <SettingRow className='mb-3' flow='no-wrap' tag='label' label={translate('textBold')}>
             <Switch checked={textBold} onChange={toggleTextBold} />
