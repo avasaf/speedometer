@@ -53,7 +53,7 @@ export const Speedometer = ({
           </g>
           <g stroke={needleColor} strokeWidth='4'>
             <circle cx='100' cy='100' r='12' fill='none' />
-            <line x1='100' y1='100' x2='100' y2='30' transform={`rotate(${angle} 100 100)`} />
+            <line x1='100' y1='100' x2='100' y2='70' transform={`rotate(${angle} 100 100)`} />
           </g>
         </g>
         <text

@@ -53,6 +53,12 @@ const Setting = (props: SettingProps): React.ReactElement => {
   const textSize = propConfig.speedometerTextSize ?? 12
   const textBold = propConfig.speedometerTextBold ?? false
   const textColor = propConfig.speedometerTextColor ?? '#000'
+
+  const [localFont, setLocalFont] = React.useState(textFont)
+  const [localSize, setLocalSize] = React.useState(String(textSize))
+
+  React.useEffect(() => { setLocalFont(textFont) }, [textFont])
+  React.useEffect(() => { setLocalSize(String(textSize)) }, [textSize])
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
@@ -163,16 +169,18 @@ const Setting = (props: SettingProps): React.ReactElement => {
     })
   }
 
-  const handleTextFontChange = (value: string): void => {
+  const handleTextFontAccept = (value: string): void => {
+    setLocalFont(value)
     onSettingChange({
       id,
       config: propConfig.set('speedometerTextFont', value)
     })
   }
 
-  const handleTextSizeChange = (value: number | string): void => {
+  const handleTextSizeAccept = (value: number | string): void => {
     const num = typeof value === 'number' ? value : parseInt(value)
     if (!isNaN(num)) {
+      setLocalSize(String(num))
       onSettingChange({
         id,
         config: propConfig.set('speedometerTextSize', num)
@@ -278,22 +286,22 @@ const Setting = (props: SettingProps): React.ReactElement => {
           <Switch checked={showSpeedometer} onChange={toggleSpeedometer} />
         </SettingRow>
         {showSpeedometer && <>
-          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('gaugeColor')}>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('gaugeColor')}>
             <ColorPicker color={gaugeColor} onChange={handleGaugeColorChange} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('needleColor')}>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('needleColor')}>
             <ColorPicker color={needleColor} onChange={handleNeedleColorChange} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('textColor')}>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('textColor')}>
             <ColorPicker color={textColor} onChange={handleTextColorChange} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('textFont')}>
-            <TextInput value={textFont} onAcceptValue={handleTextFontChange} onChange={(_e, v) => handleTextFontChange(v)} />
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('textFont')}>
+            <TextInput value={localFont} onChange={(_e, v) => setLocalFont(v)} onAcceptValue={handleTextFontAccept} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('textSize')}>
-            <TextInput type='number' value={textSize} onAcceptValue={handleTextSizeChange} onChange={(_e, v) => handleTextSizeChange(v)} />
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('textSize')}>
+            <TextInput type='number' value={localSize} onChange={(_e, v) => setLocalSize(v)} onAcceptValue={handleTextSizeAccept} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' tag='label' label={translate('textBold')}>
+          <SettingRow className='mb-3' flow='no-wrap' tag='label' label={translate('textBold')}>
             <Switch checked={textBold} onChange={toggleTextBold} />
           </SettingRow>
         </>}
