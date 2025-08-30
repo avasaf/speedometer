@@ -62,6 +62,7 @@ const Setting = (props: SettingProps): React.ReactElement => {
   React.useEffect(() => { setLocalFont(textFont) }, [textFont])
   React.useEffect(() => { setLocalSize(String(textSize)) }, [textSize])
   React.useEffect(() => { setLocalPadding(String(padding)) }, [padding])
+
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
