@@ -28,12 +28,12 @@ export const Speedometer = ({ value, min = 0, max = 40, gaugeColor = '#ccc', nee
   })
   return (
     <div className='speedometer' style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: 8 }}>
-      <svg viewBox='0 0 100 60' style={{ width: '100%', maxWidth: 200 }}>
+      <svg viewBox='0 0 100 70' style={{ width: '100%', maxWidth: 200 }}>
         <path d='M10 50 A40 40 0 0 1 90 50' fill='none' stroke={gaugeColor} strokeWidth={8} strokeLinecap='round' />
         {ticks}
         <line x1={50} y1={50} x2={50} y2={20} stroke={needleColor} strokeWidth={2} transform={`rotate(${angle} 50 50)`} />
         <circle cx={50} cy={50} r={3} fill={needleColor} />
-        <text x={50} y={55} textAnchor='middle' fontSize={10} fill='currentColor'>{value.toFixed(0)} knt</text>
+        <text x={50} y={66} textAnchor='middle' fontSize={12} fill='currentColor'>{value.toFixed(0)} knt</text>
       </svg>
     </div>
   )

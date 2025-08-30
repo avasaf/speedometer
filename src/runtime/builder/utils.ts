@@ -1,4 +1,5 @@
-import { Immutable, type ImmutableArray, type UseDataSource, DataSourceManager, dataSourceUtils, type IMArcadeContentConfigMap, arcadeContentUtils, getAppStore, appActions, MAX_DATA_SOURCES_PROFILE_ARCADE_CONTENT_PER_PAGE } from 'jimu-core'
+import { Immutable, type ImmutableArray, type UseDataSource, DataSourceManager, dataSourceUtils, type IMArcadeContentConfigMap, arcadeContentUtils, getAppStore, appActions } from 'jimu-core'
+import { MAX_DATA_SOURCES_PROFILE_ARCADE_CONTENT_PER_PAGE } from 'jimu-core/constants'
 import { sanitizer, richTextUtils } from 'jimu-ui'
 import { replacePlaceholderTextContent } from '../../utils'
 import { ZeroWidthSpace } from '../../consts'

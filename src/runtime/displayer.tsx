@@ -125,13 +125,7 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
     return match ? parseFloat(match[0]) : null
   }, [value])
 
-  const displayValue = React.useMemo(() => {
-    if (showSpeedometer && speed !== null) {
-      return value.replace(/-?\d+(\.\d+)?\s*knt?/i, '').trim()
-    }
-    return value
-  }, [value, showSpeedometer, speed])
-
+  const showGauge = React.useMemo(() => showSpeedometer && speed !== null, [showSpeedometer, speed])
   const [fadeLength, setFadeLength] = React.useState('24px')
   const [bottoming, setBottoming] = React.useState(false)
   const [scrollable, setScrollable] = React.useState(false)
@@ -200,16 +194,18 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
   return (
     <Root styleState={{ wrap, fadeLength }} title={tooltipText} onMouseEnter={handleEnter} onMouseLeave={delayLeave} ref={rootRef} {...others}>
       <Scrollable ref={syncScrollState} version={version}>
-        <RichTextDisplayer
-          widgetId={widgetId}
-          repeatedDataSource={repeatedDataSource}
-          useDataSources={useDataSources}
-          value={displayValue}
-          placeholder={placeholder}
-        />
-        {showSpeedometer && speed !== null && (
+        {!showGauge && (
+          <RichTextDisplayer
+            widgetId={widgetId}
+            repeatedDataSource={repeatedDataSource}
+            useDataSources={useDataSources}
+            value={value}
+            placeholder={placeholder}
+          />
+        )}
+        {showGauge && (
           <Speedometer
-            value={speed}
+            value={speed as number}
             gaugeColor={speedometerGaugeColor}
             needleColor={speedometerNeedleColor}
           />
