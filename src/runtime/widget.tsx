@@ -314,6 +314,12 @@ const Widget = (props: AllWidgetProps<IMConfig>): React.ReactElement => {
         dynamicStyleConfig={arcade}
         onArcadeChange={handleArcadeChange}
         repeatedDataSource={repeatedDataSource as RepeatedDataSource}
+        showSpeedometer={config.showSpeedometer ?? true}
+        speedometerGaugeColor={config.speedometerGaugeColor}
+        speedometerNeedleColor={config.speedometerNeedleColor}
+        speedometerTextFont={config.speedometerTextFont}
+        speedometerTextSize={config.speedometerTextSize}
+        speedometerTextBold={config.speedometerTextBold}
       />
       <Popper open={isDynamicStyleSettingActive} offsetOptions={[0, 4]} css={getDynamicPreviewStyle()} autoUpdate shiftOptions={shiftOptions}
         flipOptions={flipOptions} placement='right-start' reference={rootRef} >
