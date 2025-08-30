@@ -27,7 +27,7 @@ export const Speedometer = ({
   const angle = ratio * 180 - 90
   return (
     <div className='speedometer' style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: 8 }}>
-      <svg width='100%' height='100%' viewBox='0 0 200 120' xmlns='http://www.w3.org/2000/svg' aria-label='Gauge icon'>
+      <svg width='100%' height='100%' viewBox='0 0 200 140' xmlns='http://www.w3.org/2000/svg' aria-label='Gauge icon'>
         <g fill='none' strokeLinecap='round'>
           <g stroke={gaugeColor}>
             <path d='M 10 100 A 90 90 0 0 1 190 100' strokeWidth='4' />
@@ -52,13 +52,13 @@ export const Speedometer = ({
             </g>
           </g>
           <g stroke={needleColor} strokeWidth='4'>
-            <circle cx='100' cy='100' r='12' fill='#fff' />
-            <line x1='100' y1='100' x2='100' y2='20' transform={`rotate(${angle} 100 100)`} />
+            <circle cx='100' cy='100' r='12' fill='none' />
+            <line x1='100' y1='100' x2='100' y2='30' transform={`rotate(${angle} 100 100)`} />
           </g>
         </g>
         <text
           x='100'
-          y='115'
+          y='135'
           textAnchor='middle'
           fontSize={labelFontSize}
           fontFamily={labelFontFamily}

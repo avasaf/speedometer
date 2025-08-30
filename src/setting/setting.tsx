@@ -278,22 +278,22 @@ const Setting = (props: SettingProps): React.ReactElement => {
           <Switch checked={showSpeedometer} onChange={toggleSpeedometer} />
         </SettingRow>
         {showSpeedometer && <>
-          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('gaugeColor')}>
+          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('gaugeColor')}>
             <ColorPicker color={gaugeColor} onChange={handleGaugeColorChange} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('needleColor')}>
+          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('needleColor')}>
             <ColorPicker color={needleColor} onChange={handleNeedleColorChange} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('textColor')}>
+          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('textColor')}>
             <ColorPicker color={textColor} onChange={handleTextColorChange} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('textFont')}>
-            <TextInput value={textFont} onAcceptValue={handleTextFontChange} />
+          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('textFont')}>
+            <TextInput value={textFont} onAcceptValue={handleTextFontChange} onChange={(_e, v) => handleTextFontChange(v)} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('textSize')}>
-            <TextInput type='number' value={textSize} onAcceptValue={handleTextSizeChange} />
+          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' label={translate('textSize')}>
+            <TextInput type='number' value={textSize} onAcceptValue={handleTextSizeChange} onChange={(_e, v) => handleTextSizeChange(v)} />
           </SettingRow>
-          <SettingRow className='d-flex align-items-center' flow='no-wrap' tag='label' label={translate('textBold')}>
+          <SettingRow className='d-flex align-items-center justify-content-between my-2' flow='no-wrap' tag='label' label={translate('textBold')}>
             <Switch checked={textBold} onChange={toggleTextBold} />
           </SettingRow>
         </>}
