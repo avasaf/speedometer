@@ -3,8 +3,7 @@ import { builderAppSync, type AllWidgetSettingProps } from 'jimu-for-builder'
 import { SettingRow, SettingSection } from 'jimu-ui/advanced/setting-components'
 import { RichTextFormatKeys, type Editor } from 'jimu-ui/advanced/rich-text-editor'
 import type { IMConfig } from '../config'
-import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea, TextInput } from 'jimu-ui'
-import { ColorPicker } from 'jimu-ui/basic/color-picker'
+import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea, TextInput, ThemeColorPicker } from 'jimu-ui'
 import { DataSourceSelector } from 'jimu-ui/advanced/data-source-selector'
 import defaultMessages from './translations/default'
 import { ExpressionInput, ExpressionInputType } from 'jimu-ui/advanced/expression-builder'
@@ -53,12 +52,16 @@ const Setting = (props: SettingProps): React.ReactElement => {
   const textSize = propConfig.speedometerTextSize ?? 12
   const textBold = propConfig.speedometerTextBold ?? false
   const textColor = propConfig.speedometerTextColor ?? '#000'
+  const padding = propConfig.speedometerPadding ?? 0
 
   const [localFont, setLocalFont] = React.useState(textFont)
   const [localSize, setLocalSize] = React.useState(String(textSize))
+  const [localPadding, setLocalPadding] = React.useState(String(padding))
 
   React.useEffect(() => { setLocalFont(textFont) }, [textFont])
   React.useEffect(() => { setLocalSize(String(textSize)) }, [textSize])
+  React.useEffect(() => { setLocalPadding(String(padding)) }, [padding])
+          
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
@@ -169,6 +172,17 @@ const Setting = (props: SettingProps): React.ReactElement => {
     })
   }
 
+  const handlePaddingAccept = (value: number | string): void => {
+    const num = typeof value === 'number' ? value : parseInt(value)
+    if (!isNaN(num)) {
+      setLocalPadding(String(num))
+      onSettingChange({
+        id,
+        config: propConfig.set('speedometerPadding', num)
+      })
+    }
+  }
+    
   const handleTextFontAccept = (value: string): void => {
     setLocalFont(value)
     onSettingChange({
@@ -287,19 +301,22 @@ const Setting = (props: SettingProps): React.ReactElement => {
         </SettingRow>
         {showSpeedometer && <>
           <SettingRow className='mb-3' flow='no-wrap' label={translate('gaugeColor')}>
-            <ColorPicker color={gaugeColor} onChange={handleGaugeColorChange} />
+            <ThemeColorPicker value={gaugeColor} onChange={handleGaugeColorChange} />
           </SettingRow>
           <SettingRow className='mb-3' flow='no-wrap' label={translate('needleColor')}>
-            <ColorPicker color={needleColor} onChange={handleNeedleColorChange} />
+            <ThemeColorPicker value={needleColor} onChange={handleNeedleColorChange} />
           </SettingRow>
           <SettingRow className='mb-3' flow='no-wrap' label={translate('textColor')}>
-            <ColorPicker color={textColor} onChange={handleTextColorChange} />
+            <ThemeColorPicker value={textColor} onChange={handleTextColorChange} />
           </SettingRow>
           <SettingRow className='mb-3' flow='no-wrap' label={translate('textFont')}>
             <TextInput style={{ width: 120 }} value={localFont} onChange={(_e, v) => setLocalFont(v)} onAcceptValue={handleTextFontAccept} />
           </SettingRow>
           <SettingRow className='mb-3' flow='no-wrap' label={translate('textSize')}>
             <TextInput style={{ width: 80 }} type='number' value={localSize} onChange={(_e, v) => setLocalSize(v)} onAcceptValue={handleTextSizeAccept} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('gaugePadding')}>
+            <TextInput style={{ width: 80 }} type='number' value={localPadding} onChange={(_e, v) => setLocalPadding(v)} onAcceptValue={handlePaddingAccept} />
           </SettingRow>
           <SettingRow className='mb-3' flow='no-wrap' tag='label' label={translate('textBold')}>
             <Switch checked={textBold} onChange={toggleTextBold} />

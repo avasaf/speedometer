@@ -18,6 +18,7 @@ export type DisplayerProps = Omit<RichTextDisplayerProps, 'sanitize'> & {
   speedometerTextFont?: string
   speedometerTextSize?: number
   speedometerTextBold?: boolean
+  speedometerPadding?: number
 }
 
 const Root = styled('div')<StyleState<{ wrap: boolean, fadeLength: string }>>(({ theme, styleState }) => {
@@ -118,6 +119,7 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
     speedometerTextFont,
     speedometerTextSize,
     speedometerTextBold,
+    speedometerPadding,
     ...others
   } = props
 
@@ -220,6 +222,7 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
             labelFontFamily={speedometerTextFont}
             labelFontSize={speedometerTextSize}
             labelBold={speedometerTextBold}
+            padding={speedometerPadding}
           />
         )}
       </Scrollable>

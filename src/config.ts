@@ -24,6 +24,7 @@ export interface Config {
   speedometerTextFont?: string
   speedometerTextSize?: number
   speedometerTextBold?: boolean
+  speedometerPadding?: number
 }
 
 export type IMConfig = ImmutableObject<Config>

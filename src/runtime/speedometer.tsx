@@ -10,6 +10,7 @@ export interface SpeedometerProps {
   labelFontFamily?: string
   labelFontSize?: number
   labelBold?: boolean
+  padding?: number
 }
 
 export const Speedometer = ({
@@ -21,12 +22,13 @@ export const Speedometer = ({
   labelColor = '#000',
   labelFontFamily = 'Arial',
   labelFontSize = 12,
-  labelBold = false
+  labelBold = false,
+  padding = 0
 }: SpeedometerProps): React.ReactElement => {
   const ratio = Math.max(0, Math.min(1, (value - min) / (max - min)))
   const angle = ratio * 180 - 90
   return (
-    <div className='speedometer' style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+    <div className='speedometer' style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: 8, padding }}>
       <svg width='100%' height='100%' viewBox='0 0 200 140' xmlns='http://www.w3.org/2000/svg' aria-label='Gauge icon'>
         <g fill='none' strokeLinecap='round'>
           <g stroke={gaugeColor}>

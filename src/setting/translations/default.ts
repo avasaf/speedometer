@@ -7,5 +7,6 @@ export default {
   textColor: 'Value color',
   textFont: 'Value font',
   textSize: 'Value size',
-  textBold: 'Value bold'
+  textBold: 'Value bold',
+  gaugePadding: 'Gauge padding'
 }
