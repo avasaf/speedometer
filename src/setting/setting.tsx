@@ -178,7 +178,6 @@ const Setting = (props: SettingProps): React.ReactElement => {
       config: propConfig.set('speedometerTextBold', !textBold)
     })
   }
-
   const handleTooltipChange = (expression: Expression): void => {
     if (expression == null) {
       return
