@@ -317,6 +317,7 @@ const Widget = (props: AllWidgetProps<IMConfig>): React.ReactElement => {
         showSpeedometer={config.showSpeedometer ?? true}
         speedometerGaugeColor={config.speedometerGaugeColor}
         speedometerNeedleColor={config.speedometerNeedleColor}
+        speedometerTextColor={config.speedometerTextColor}
         speedometerTextFont={config.speedometerTextFont}
         speedometerTextSize={config.speedometerTextSize}
         speedometerTextBold={config.speedometerTextBold}

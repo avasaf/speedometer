@@ -14,6 +14,7 @@ export type DisplayerProps = Omit<RichTextDisplayerProps, 'sanitize'> & {
   showSpeedometer?: boolean
   speedometerGaugeColor?: string
   speedometerNeedleColor?: string
+  speedometerTextColor?: string
   speedometerTextFont?: string
   speedometerTextSize?: number
   speedometerTextBold?: boolean
@@ -113,6 +114,7 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
     showSpeedometer = true,
     speedometerGaugeColor,
     speedometerNeedleColor,
+    speedometerTextColor,
     speedometerTextFont,
     speedometerTextSize,
     speedometerTextBold,
@@ -214,6 +216,7 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
             value={speed as number}
             gaugeColor={speedometerGaugeColor}
             needleColor={speedometerNeedleColor}
+            labelColor={speedometerTextColor}
             labelFontFamily={speedometerTextFont}
             labelFontSize={speedometerTextSize}
             labelBold={speedometerTextBold}

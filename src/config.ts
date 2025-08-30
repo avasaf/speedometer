@@ -20,6 +20,7 @@ export interface Config {
   showSpeedometer?: boolean
   speedometerGaugeColor?: string
   speedometerNeedleColor?: string
+  speedometerTextColor?: string
   speedometerTextFont?: string
   speedometerTextSize?: number
   speedometerTextBold?: boolean

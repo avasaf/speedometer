@@ -52,6 +52,7 @@ const Setting = (props: SettingProps): React.ReactElement => {
   const textFont = propConfig.speedometerTextFont ?? 'Arial'
   const textSize = propConfig.speedometerTextSize ?? 12
   const textBold = propConfig.speedometerTextBold ?? false
+  const textColor = propConfig.speedometerTextColor ?? '#000'
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
@@ -155,6 +156,13 @@ const Setting = (props: SettingProps): React.ReactElement => {
     })
   }
 
+  const handleTextColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTextColor', color)
+    })
+  }
+
   const handleTextFontChange = (value: string): void => {
     onSettingChange({
       id,
@@ -178,6 +186,7 @@ const Setting = (props: SettingProps): React.ReactElement => {
       config: propConfig.set('speedometerTextBold', !textBold)
     })
   }
+
   const handleTooltipChange = (expression: Expression): void => {
     if (expression == null) {
       return
@@ -269,19 +278,22 @@ const Setting = (props: SettingProps): React.ReactElement => {
           <Switch checked={showSpeedometer} onChange={toggleSpeedometer} />
         </SettingRow>
         {showSpeedometer && <>
-          <SettingRow flow='no-wrap' label={translate('gaugeColor')}>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('gaugeColor')}>
             <ColorPicker color={gaugeColor} onChange={handleGaugeColorChange} />
           </SettingRow>
-          <SettingRow flow='no-wrap' label={translate('needleColor')}>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('needleColor')}>
             <ColorPicker color={needleColor} onChange={handleNeedleColorChange} />
           </SettingRow>
-          <SettingRow flow='no-wrap' label={translate('textFont')}>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('textColor')}>
+            <ColorPicker color={textColor} onChange={handleTextColorChange} />
+          </SettingRow>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('textFont')}>
             <TextInput value={textFont} onAcceptValue={handleTextFontChange} />
           </SettingRow>
-          <SettingRow flow='no-wrap' label={translate('textSize')}>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('textSize')}>
             <TextInput type='number' value={textSize} onAcceptValue={handleTextSizeChange} />
           </SettingRow>
-          <SettingRow flow='no-wrap' tag='label' label={translate('textBold')}>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' tag='label' label={translate('textBold')}>
             <Switch checked={textBold} onChange={toggleTextBold} />
           </SettingRow>
         </>}
