@@ -3,7 +3,8 @@ import { builderAppSync, type AllWidgetSettingProps } from 'jimu-for-builder'
 import { SettingRow, SettingSection } from 'jimu-ui/advanced/setting-components'
 import { RichTextFormatKeys, type Editor } from 'jimu-ui/advanced/rich-text-editor'
 import type { IMConfig } from '../config'
-import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea } from 'jimu-ui'
+import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea, TextInput } from 'jimu-ui'
+import { ColorPicker } from 'jimu-ui/basic/color-picker'
 import { DataSourceSelector } from 'jimu-ui/advanced/data-source-selector'
 import defaultMessages from './translations/default'
 import { ExpressionInput, ExpressionInputType } from 'jimu-ui/advanced/expression-builder'
@@ -45,6 +46,13 @@ const Setting = (props: SettingProps): React.ReactElement => {
   const placeholderEditable = getAppStore().getState().appStateInBuilder?.appInfo?.type === 'Web Experience Template'
   const style = propConfig.style
   const wrap = style?.wrap ?? true
+  const showSpeedometer = propConfig.showSpeedometer ?? true
+  const gaugeColor = propConfig.speedometerGaugeColor ?? '#ccc'
+  const needleColor = propConfig.speedometerNeedleColor ?? 'red'
+  const textFont = propConfig.speedometerTextFont ?? 'Arial'
+  const textSize = propConfig.speedometerTextSize ?? 12
+  const textBold = propConfig.speedometerTextBold ?? false
+  const textColor = propConfig.speedometerTextColor ?? '#000'
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
@@ -124,6 +132,58 @@ const Setting = (props: SettingProps): React.ReactElement => {
     onSettingChange({
       id,
       config: propConfig.setIn(['style', 'wrap'], !wrap)
+    })
+  }
+
+  const toggleSpeedometer = (): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('showSpeedometer', !showSpeedometer)
+    })
+  }
+
+  const handleGaugeColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerGaugeColor', color)
+    })
+  }
+
+  const handleNeedleColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerNeedleColor', color)
+    })
+  }
+
+  const handleTextColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTextColor', color)
+    })
+  }
+
+  const handleTextFontChange = (value: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTextFont', value)
+    })
+  }
+
+  const handleTextSizeChange = (value: number | string): void => {
+    const num = typeof value === 'number' ? value : parseInt(value)
+    if (!isNaN(num)) {
+      onSettingChange({
+        id,
+        config: propConfig.set('speedometerTextSize', num)
+      })
+    }
+  }
+
+  const toggleTextBold = (): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTextBold', !textBold)
     })
   }
 
@@ -214,6 +274,29 @@ const Setting = (props: SettingProps): React.ReactElement => {
         {placeholderEditable && <SettingRow flow='wrap' label={translate('placeholder')}>
           <TextArea aria-label={translate('placeholder')} defaultValue={placeholderText} onAcceptValue={handlePlaceholderTextChange}></TextArea>
         </SettingRow>}
+        <SettingRow flow='no-wrap' tag='label' label={translate('showSpeedometer')}>
+          <Switch checked={showSpeedometer} onChange={toggleSpeedometer} />
+        </SettingRow>
+        {showSpeedometer && <>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('gaugeColor')}>
+            <ColorPicker color={gaugeColor} onChange={handleGaugeColorChange} />
+          </SettingRow>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('needleColor')}>
+            <ColorPicker color={needleColor} onChange={handleNeedleColorChange} />
+          </SettingRow>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('textColor')}>
+            <ColorPicker color={textColor} onChange={handleTextColorChange} />
+          </SettingRow>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('textFont')}>
+            <TextInput value={textFont} onAcceptValue={handleTextFontChange} />
+          </SettingRow>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' label={translate('textSize')}>
+            <TextInput type='number' value={textSize} onAcceptValue={handleTextSizeChange} />
+          </SettingRow>
+          <SettingRow className='d-flex align-items-center' flow='no-wrap' tag='label' label={translate('textBold')}>
+            <Switch checked={textBold} onChange={toggleTextBold} />
+          </SettingRow>
+        </>}
 
       </SettingSection>
 
