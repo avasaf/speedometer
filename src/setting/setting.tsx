@@ -3,7 +3,7 @@ import { builderAppSync, type AllWidgetSettingProps } from 'jimu-for-builder'
 import { SettingRow, SettingSection } from 'jimu-ui/advanced/setting-components'
 import { RichTextFormatKeys, type Editor } from 'jimu-ui/advanced/rich-text-editor'
 import type { IMConfig } from '../config'
-import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea } from 'jimu-ui'
+import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea, TextInput } from 'jimu-ui'
 import { ColorPicker } from 'jimu-ui/basic/color-picker'
 import { DataSourceSelector } from 'jimu-ui/advanced/data-source-selector'
 import defaultMessages from './translations/default'
@@ -49,6 +49,9 @@ const Setting = (props: SettingProps): React.ReactElement => {
   const showSpeedometer = propConfig.showSpeedometer ?? true
   const gaugeColor = propConfig.speedometerGaugeColor ?? '#ccc'
   const needleColor = propConfig.speedometerNeedleColor ?? 'red'
+  const textFont = propConfig.speedometerTextFont ?? 'Arial'
+  const textSize = propConfig.speedometerTextSize ?? 12
+  const textBold = propConfig.speedometerTextBold ?? false
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
@@ -152,6 +155,29 @@ const Setting = (props: SettingProps): React.ReactElement => {
     })
   }
 
+  const handleTextFontChange = (value: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTextFont', value)
+    })
+  }
+
+  const handleTextSizeChange = (value: number | string): void => {
+    const num = typeof value === 'number' ? value : parseInt(value)
+    if (!isNaN(num)) {
+      onSettingChange({
+        id,
+        config: propConfig.set('speedometerTextSize', num)
+      })
+    }
+  }
+
+  const toggleTextBold = (): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTextBold', !textBold)
+    })
+  }
   const handleTooltipChange = (expression: Expression): void => {
     if (expression == null) {
       return
@@ -248,6 +274,15 @@ const Setting = (props: SettingProps): React.ReactElement => {
           </SettingRow>
           <SettingRow flow='no-wrap' label={translate('needleColor')}>
             <ColorPicker color={needleColor} onChange={handleNeedleColorChange} />
+          </SettingRow>
+          <SettingRow flow='no-wrap' label={translate('textFont')}>
+            <TextInput value={textFont} onAcceptValue={handleTextFontChange} />
+          </SettingRow>
+          <SettingRow flow='no-wrap' label={translate('textSize')}>
+            <TextInput type='number' value={textSize} onAcceptValue={handleTextSizeChange} />
+          </SettingRow>
+          <SettingRow flow='no-wrap' tag='label' label={translate('textBold')}>
+            <Switch checked={textBold} onChange={toggleTextBold} />
           </SettingRow>
         </>}
 

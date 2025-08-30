@@ -3,5 +3,8 @@ export default {
   speedometer: 'Speedometer',
   showSpeedometer: 'Show speedometer',
   gaugeColor: 'Gauge color',
-  needleColor: 'Needle color'
+  needleColor: 'Needle color',
+  textFont: 'Value font',
+  textSize: 'Value size',
+  textBold: 'Value bold'
 }

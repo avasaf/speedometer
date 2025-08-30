@@ -20,6 +20,9 @@ export interface Config {
   showSpeedometer?: boolean
   speedometerGaugeColor?: string
   speedometerNeedleColor?: string
+  speedometerTextFont?: string
+  speedometerTextSize?: number
+  speedometerTextBold?: boolean
 }
 
 export type IMConfig = ImmutableObject<Config>
