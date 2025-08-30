@@ -2,6 +2,7 @@ import { React, polished, type IMExpression, ExpressionResolverComponent, expres
 import { DownDoubleOutlined } from 'jimu-icons/outlined/directional/down-double'
 import { styled, useTheme } from 'jimu-theme'
 import { RichTextDisplayer, type RichTextDisplayerProps, Scrollable, type ScrollableRefProps, type StyleSettings, type StyleState, styleUtils } from 'jimu-ui'
+import { Speedometer } from './speedometer'
 
 const LeaveDelay = 500
 
@@ -10,6 +11,13 @@ export type DisplayerProps = Omit<RichTextDisplayerProps, 'sanitize'> & {
   wrap?: boolean
   dynamicStyleConfig?: IMDynamicStyleConfig
   onArcadeChange?: (style: React.CSSProperties) => void
+  showSpeedometer?: boolean
+  speedometerGaugeColor?: string
+  speedometerNeedleColor?: string
+  speedometerTextColor?: string
+  speedometerTextFont?: string
+  speedometerTextSize?: number
+  speedometerTextBold?: boolean
 }
 
 const Root = styled('div')<StyleState<{ wrap: boolean, fadeLength: string }>>(({ theme, styleState }) => {
@@ -103,6 +111,13 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
     tooltip,
     dynamicStyleConfig,
     onArcadeChange,
+    showSpeedometer = true,
+    speedometerGaugeColor,
+    speedometerNeedleColor,
+    speedometerTextColor,
+    speedometerTextFont,
+    speedometerTextSize,
+    speedometerTextBold,
     ...others
   } = props
 
@@ -112,6 +127,13 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
   const rootRef = React.useRef<HTMLDivElement>()
   const isTextTooltip = expressionUtils.isSingleStringExpression(tooltip as any)
   const [tooltipText, setTooltipText] = React.useState('')
+
+  const speed = React.useMemo(() => {
+    const match = value.match(/-?\d+(\.\d+)?/)
+    return match ? parseFloat(match[0]) : null
+  }, [value])
+
+  const showGauge = React.useMemo(() => showSpeedometer && speed !== null, [showSpeedometer, speed])
 
   const [fadeLength, setFadeLength] = React.useState('24px')
   const [bottoming, setBottoming] = React.useState(false)
@@ -181,13 +203,26 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
   return (
     <Root styleState={{ wrap, fadeLength }} title={tooltipText} onMouseEnter={handleEnter} onMouseLeave={delayLeave} ref={rootRef} {...others}>
       <Scrollable ref={syncScrollState} version={version}>
-        <RichTextDisplayer
-          widgetId={widgetId}
-          repeatedDataSource={repeatedDataSource}
-          useDataSources={useDataSources}
-          value={value}
-          placeholder={placeholder}
-        />
+        {!showGauge && (
+          <RichTextDisplayer
+            widgetId={widgetId}
+            repeatedDataSource={repeatedDataSource}
+            useDataSources={useDataSources}
+            value={value}
+            placeholder={placeholder}
+          />
+        )}
+        {showGauge && (
+          <Speedometer
+            value={speed as number}
+            gaugeColor={speedometerGaugeColor}
+            needleColor={speedometerNeedleColor}
+            labelColor={speedometerTextColor}
+            labelFontFamily={speedometerTextFont}
+            labelFontSize={speedometerTextSize}
+            labelBold={speedometerTextBold}
+          />
+        )}
       </Scrollable>
       {showFade && scrollable && !bottoming && <div className='text-fade text-fade-bottom'>
         <span className='arrow arrow-bottom rounded-circle mr-1'>
