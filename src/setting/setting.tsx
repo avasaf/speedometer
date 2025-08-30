@@ -3,7 +3,8 @@ import { builderAppSync, type AllWidgetSettingProps } from 'jimu-for-builder'
 import { SettingRow, SettingSection } from 'jimu-ui/advanced/setting-components'
 import { RichTextFormatKeys, type Editor } from 'jimu-ui/advanced/rich-text-editor'
 import type { IMConfig } from '../config'
-import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea, TextInput, ThemeColorPicker } from 'jimu-ui'
+import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea, TextInput } from 'jimu-ui'
+import { ThemeColorPicker } from 'jimu-ui/basic/color-picker'
 import { DataSourceSelector } from 'jimu-ui/advanced/data-source-selector'
 import defaultMessages from './translations/default'
 import { ExpressionInput, ExpressionInputType } from 'jimu-ui/advanced/expression-builder'
@@ -61,7 +62,7 @@ const Setting = (props: SettingProps): React.ReactElement => {
   React.useEffect(() => { setLocalFont(textFont) }, [textFont])
   React.useEffect(() => { setLocalSize(String(textSize)) }, [textSize])
   React.useEffect(() => { setLocalPadding(String(padding)) }, [padding])
-          
+
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
@@ -182,7 +183,7 @@ const Setting = (props: SettingProps): React.ReactElement => {
       })
     }
   }
-    
+
   const handleTextFontAccept = (value: string): void => {
     setLocalFont(value)
     onSettingChange({
