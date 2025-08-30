@@ -1,8 +1,8 @@
 import { Immutable, type ImmutableArray, type UseDataSource, DataSourceManager, dataSourceUtils, type IMArcadeContentConfigMap, arcadeContentUtils, getAppStore, appActions } from 'jimu-core'
+import { MAX_DATA_SOURCES_PROFILE_ARCADE_CONTENT_PER_PAGE } from 'jimu-core/constants'
 import { sanitizer, richTextUtils } from 'jimu-ui'
 import { replacePlaceholderTextContent } from '../../utils'
 import { ZeroWidthSpace } from '../../consts'
-import { MAX_DATA_SOURCES_PROFILE_ARCADE_CONTENT_PER_PAGE } from 'jimu-core/lib/constants'
 export { getExpressionParts } from '../../utils'
 export const DATA_SOURCE_ID_REGEXP = /data-dsid=\"(((?![\=|\>|\"]).)*)[\"\>|"\s)]/gm
 
