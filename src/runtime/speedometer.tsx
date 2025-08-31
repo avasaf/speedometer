@@ -93,9 +93,9 @@ export const Speedometer = ({
               </text>
             ))}
           </g>
-          <g stroke={needleColor} strokeWidth='4'>
+          <g stroke={needleColor} strokeWidth='3'>
             <circle cx='100' cy='100' r='12' fill='none' />
-            <line x1='100' y1='100' x2='100' y2='70' transform={`rotate(${angle} 100 100)`} />
+            <line x1='100' y1='100' x2='100' y2='50' transform={`rotate(${angle} 100 100)`} />
           </g>
         </g>
         <text
@@ -113,4 +113,3 @@ export const Speedometer = ({
     </div>
   )
 }
-

@@ -242,7 +242,6 @@ const Setting = (props: SettingProps): React.ReactElement => {
     }
   }
 
-
   const handleTooltipChange = (expression: Expression): void => {
     if (expression == null) {
       return
