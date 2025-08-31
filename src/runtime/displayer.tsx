@@ -231,7 +231,6 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
             tickColor={speedometerTickColor}
             tickFontFamily={speedometerTickFont}
             tickFontSize={speedometerTickSize}
-
             padding={speedometerPadding}
           />
         )}
