@@ -144,7 +144,6 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
   }, [value])
 
   const showGauge = React.useMemo(() => showSpeedometer && speed !== null, [showSpeedometer, speed])
-
   const [fadeLength, setFadeLength] = React.useState('24px')
   const [bottoming, setBottoming] = React.useState(false)
   const [scrollable, setScrollable] = React.useState(false)
@@ -239,6 +238,7 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
           />
         )}
       </Scrollable>
+      {speed !== null && <Speedometer value={speed} />}
       {showFade && scrollable && !bottoming && <div className='text-fade text-fade-bottom'>
         <span className='arrow arrow-bottom rounded-circle mr-1'>
           <DownDoubleOutlined className='bounce' color={theme?.ref.palette?.black} />
