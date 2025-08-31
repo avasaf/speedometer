@@ -18,6 +18,10 @@ export type DisplayerProps = Omit<RichTextDisplayerProps, 'sanitize'> & {
   speedometerTextFont?: string
   speedometerTextSize?: number
   speedometerTextBold?: boolean
+  speedometerTickColor?: string
+  speedometerTickFont?: string
+  speedometerTickSize?: number
+  speedometerTickBold?: boolean
   speedometerPadding?: number
 }
 
@@ -119,6 +123,10 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
     speedometerTextFont,
     speedometerTextSize,
     speedometerTextBold,
+    speedometerTickColor,
+    speedometerTickFont,
+    speedometerTickSize,
+    speedometerTickBold,
     speedometerPadding,
     ...others
   } = props
@@ -222,6 +230,10 @@ export function Displayer(props: DisplayerProps): React.ReactElement {
             labelFontFamily={speedometerTextFont}
             labelFontSize={speedometerTextSize}
             labelBold={speedometerTextBold}
+            tickColor={speedometerTickColor}
+            tickFontFamily={speedometerTickFont}
+            tickFontSize={speedometerTickSize}
+            tickBold={speedometerTickBold}
             padding={speedometerPadding}
           />
         )}

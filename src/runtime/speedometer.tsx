@@ -10,6 +10,10 @@ export interface SpeedometerProps {
   labelFontFamily?: string
   labelFontSize?: number
   labelBold?: boolean
+  tickColor?: string
+  tickFontFamily?: string
+  tickFontSize?: number
+  tickBold?: boolean
   padding?: number
 }
 
@@ -23,10 +27,36 @@ export const Speedometer = ({
   labelFontFamily = 'Arial',
   labelFontSize = 12,
   labelBold = false,
+  tickColor = '#000',
+  tickFontFamily = 'Arial',
+  tickFontSize = 10,
+  tickBold = false,
   padding = 0
 }: SpeedometerProps): React.ReactElement => {
   const ratio = Math.max(0, Math.min(1, (value - min) / (max - min)))
   const angle = ratio * 180 - 90
+  const ticks = React.useMemo(() => {
+    const count = 4
+    const cx = 100
+    const cy = 100
+    const outer = 90
+    const inner = 82
+    const labelRadius = 65
+    return Array.from({ length: count + 1 }, (_, i) => {
+      const r = i / count
+      const rad = Math.PI - r * Math.PI
+      const cos = Math.cos(rad)
+      const sin = Math.sin(rad)
+      const x1 = cx + outer * cos
+      const y1 = cy - outer * sin
+      const x2 = cx + inner * cos
+      const y2 = cy - inner * sin
+      const lx = cx + labelRadius * cos
+      const ly = cy - labelRadius * sin
+      const label = Math.round(min + (max - min) * r)
+      return { x1, y1, x2, y2, lx, ly, label }
+    })
+  }, [min, max])
   return (
     <div className='speedometer' style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: 8, padding }}>
       <svg width='100%' height='100%' viewBox='0 0 200 140' xmlns='http://www.w3.org/2000/svg' aria-label='Gauge icon'>
@@ -34,13 +64,9 @@ export const Speedometer = ({
           <g stroke={gaugeColor}>
             <path d='M 10 100 A 90 90 0 0 1 190 100' strokeWidth='4' />
             <g strokeWidth='4'>
-              <line x1='10' y1='100' x2='24' y2='100' />
-              <line x1='34.18' y1='62.00' x2='22.06' y2='55.00' />
-              <line x1='62.00' y1='34.18' x2='55.00' y2='22.06' />
-              <line x1='100.00' y1='24.00' x2='100.00' y2='10.00' />
-              <line x1='138.00' y1='34.18' x2='145.00' y2='22.06' />
-              <line x1='165.82' y1='62.00' x2='177.94' y2='55.00' />
-              <line x1='176.00' y1='100.00' x2='190.00' y2='100.00' />
+              {ticks.map((t, i) => (
+                <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} />
+              ))}
             </g>
             <g strokeWidth='2'>
               <line x1='100' y1='88' x2='100' y2='82' />
@@ -52,6 +78,21 @@ export const Speedometer = ({
               <line x1='92' y1='108' x2='88' y2='112' />
               <line x1='92' y1='92' x2='88' y2='88' />
             </g>
+            {ticks.map((t, i) => (
+              <text
+                key={`label-${i}`}
+                x={t.lx}
+                y={t.ly}
+                textAnchor='middle'
+                alignmentBaseline='middle'
+                fontSize={tickFontSize}
+                fontFamily={tickFontFamily}
+                fontWeight={tickBold ? 'bold' : 'normal'}
+                fill={tickColor}
+              >
+                {t.label}
+              </text>
+            ))}
           </g>
           <g stroke={needleColor} strokeWidth='4'>
             <circle cx='100' cy='100' r='12' fill='none' />

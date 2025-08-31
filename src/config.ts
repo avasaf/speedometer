@@ -24,6 +24,10 @@ export interface Config {
   speedometerTextFont?: string
   speedometerTextSize?: number
   speedometerTextBold?: boolean
+  speedometerTickColor?: string
+  speedometerTickFont?: string
+  speedometerTickSize?: number
+  speedometerTickBold?: boolean
   speedometerPadding?: number
 }
 
