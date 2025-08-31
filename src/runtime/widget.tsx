@@ -2,7 +2,7 @@
 import {
   React, classNames, type AllWidgetProps, type IMState, type RepeatedDataSource, appActions, AppMode, Immutable,
   ReactRedux, type IntlShape, type IMExpressionMap, expressionUtils, type ExpressionMap, MutableStoreManager, getAppStore, hooks,
-  appConfigUtils,
+  appConfigUtils, DataSourceManager,
   jsx,
   css,
   type DynamicStyleWidgetPreviewRepeatedRecordInfo
@@ -95,6 +95,18 @@ const Widget = (props: AllWidgetProps<IMConfig>): React.ReactElement => {
   const useDataSources = useDataSourcesEnabled ? propUseDataSources : undefined
   const useDataSourcesLength = useDataSources?.length ?? 0
   const arcade = config.style?.dynamicStyleConfig
+
+  React.useEffect(() => {
+    if (!useDataSources?.length) return
+    const dsManager = DataSourceManager.getInstance()
+    const interval = setInterval(() => {
+      useDataSources.forEach(ds => {
+        const dataSource = dsManager.getDataSource(ds.dataSourceId) as any
+        dataSource?.refresh?.()
+      })
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [useDataSources])
 
   const [styles, setStyles] = React.useState<React.CSSProperties>({})
   // The expressions in rich-text
@@ -314,6 +326,17 @@ const Widget = (props: AllWidgetProps<IMConfig>): React.ReactElement => {
         dynamicStyleConfig={arcade}
         onArcadeChange={handleArcadeChange}
         repeatedDataSource={repeatedDataSource as RepeatedDataSource}
+        showSpeedometer={config.showSpeedometer ?? true}
+        speedometerGaugeColor={config.speedometerGaugeColor}
+        speedometerNeedleColor={config.speedometerNeedleColor}
+        speedometerTextColor={config.speedometerTextColor}
+        speedometerTextFont={config.speedometerTextFont}
+        speedometerTextSize={config.speedometerTextSize}
+        speedometerTextBold={config.speedometerTextBold}
+        speedometerTickColor={config.speedometerTickColor}
+        speedometerTickFont={config.speedometerTickFont}
+        speedometerTickSize={config.speedometerTickSize}
+        speedometerPadding={config.speedometerPadding}
       />
       <Popper open={isDynamicStyleSettingActive} offsetOptions={[0, 4]} css={getDynamicPreviewStyle()} autoUpdate shiftOptions={shiftOptions}
         flipOptions={flipOptions} placement='right-start' reference={rootRef} >
