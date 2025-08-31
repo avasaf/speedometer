@@ -1,4 +1,4 @@
 export default {
-  _widgetLabel: 'Text',
+  _widgetLabel: 'Speedometer',
   defaultPlaceholder: 'Double click to edit text'
 }
