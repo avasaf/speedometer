@@ -324,7 +324,6 @@ const Widget = (props: AllWidgetProps<IMConfig>): React.ReactElement => {
         speedometerTickColor={config.speedometerTickColor}
         speedometerTickFont={config.speedometerTickFont}
         speedometerTickSize={config.speedometerTickSize}
-        speedometerTickBold={config.speedometerTickBold}
         speedometerPadding={config.speedometerPadding}
       />
       <Popper open={isDynamicStyleSettingActive} offsetOptions={[0, 4]} css={getDynamicPreviewStyle()} autoUpdate shiftOptions={shiftOptions}

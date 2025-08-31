@@ -27,7 +27,7 @@ export interface Config {
   speedometerTickColor?: string
   speedometerTickFont?: string
   speedometerTickSize?: number
-  speedometerTickBold?: boolean
+
   speedometerPadding?: number
 }
 

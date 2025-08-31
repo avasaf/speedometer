@@ -7,7 +7,6 @@ export default {
   tickColor: 'Tick color',
   tickFont: 'Tick font',
   tickSize: 'Tick size',
-  tickBold: 'Tick bold',
   textColor: 'Value color',
   textFont: 'Value font',
   textSize: 'Value size',

@@ -13,7 +13,6 @@ export interface SpeedometerProps {
   tickColor?: string
   tickFontFamily?: string
   tickFontSize?: number
-  tickBold?: boolean
   padding?: number
 }
 
@@ -30,7 +29,6 @@ export const Speedometer = ({
   tickColor = '#000',
   tickFontFamily = 'Arial',
   tickFontSize = 10,
-  tickBold = false,
   padding = 0
 }: SpeedometerProps): React.ReactElement => {
   const ratio = Math.max(0, Math.min(1, (value - min) / (max - min)))
@@ -78,6 +76,8 @@ export const Speedometer = ({
               <line x1='92' y1='108' x2='88' y2='112' />
               <line x1='92' y1='92' x2='88' y2='88' />
             </g>
+          </g>
+          <g stroke='none'>
             {ticks.map((t, i) => (
               <text
                 key={`label-${i}`}
@@ -87,7 +87,6 @@ export const Speedometer = ({
                 alignmentBaseline='middle'
                 fontSize={tickFontSize}
                 fontFamily={tickFontFamily}
-                fontWeight={tickBold ? 'bold' : 'normal'}
                 fill={tickColor}
               >
                 {t.label}
