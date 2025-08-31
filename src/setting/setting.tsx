@@ -3,7 +3,8 @@ import { builderAppSync, type AllWidgetSettingProps } from 'jimu-for-builder'
 import { SettingRow, SettingSection } from 'jimu-ui/advanced/setting-components'
 import { RichTextFormatKeys, type Editor } from 'jimu-ui/advanced/rich-text-editor'
 import type { IMConfig } from '../config'
-import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea } from 'jimu-ui'
+import { Switch, defaultMessages as jimuUiMessage, richTextUtils, TextArea, TextInput } from 'jimu-ui'
+import { ThemeColorPicker } from 'jimu-ui/basic/color-picker'
 import { DataSourceSelector } from 'jimu-ui/advanced/data-source-selector'
 import defaultMessages from './translations/default'
 import { ExpressionInput, ExpressionInputType } from 'jimu-ui/advanced/expression-builder'
@@ -45,6 +46,30 @@ const Setting = (props: SettingProps): React.ReactElement => {
   const placeholderEditable = getAppStore().getState().appStateInBuilder?.appInfo?.type === 'Web Experience Template'
   const style = propConfig.style
   const wrap = style?.wrap ?? true
+  const showSpeedometer = propConfig.showSpeedometer ?? true
+  const gaugeColor = propConfig.speedometerGaugeColor ?? '#ccc'
+  const needleColor = propConfig.speedometerNeedleColor ?? 'red'
+  const tickFont = propConfig.speedometerTickFont ?? 'Arial'
+  const tickSize = propConfig.speedometerTickSize ?? 10
+  const tickBold = propConfig.speedometerTickBold ?? false
+  const tickColor = propConfig.speedometerTickColor ?? '#000'
+  const textFont = propConfig.speedometerTextFont ?? 'Arial'
+  const textSize = propConfig.speedometerTextSize ?? 12
+  const textBold = propConfig.speedometerTextBold ?? false
+  const textColor = propConfig.speedometerTextColor ?? '#000'
+  const padding = propConfig.speedometerPadding ?? 0
+
+  const [localFont, setLocalFont] = React.useState(textFont)
+  const [localSize, setLocalSize] = React.useState(String(textSize))
+  const [localTickFont, setLocalTickFont] = React.useState(tickFont)
+  const [localTickSize, setLocalTickSize] = React.useState(String(tickSize))
+  const [localPadding, setLocalPadding] = React.useState(String(padding))
+
+  React.useEffect(() => { setLocalFont(textFont) }, [textFont])
+  React.useEffect(() => { setLocalSize(String(textSize)) }, [textSize])
+  React.useEffect(() => { setLocalTickFont(tickFont) }, [tickFont])
+  React.useEffect(() => { setLocalTickSize(String(tickSize)) }, [tickSize])
+  React.useEffect(() => { setLocalPadding(String(padding)) }, [padding])
   const enableDynamicStyle = style?.enableDynamicStyle ?? false
   const dynamicStyleConfig = style?.dynamicStyleConfig
   const text = propConfig.text
@@ -124,6 +149,104 @@ const Setting = (props: SettingProps): React.ReactElement => {
     onSettingChange({
       id,
       config: propConfig.setIn(['style', 'wrap'], !wrap)
+    })
+  }
+
+  const toggleSpeedometer = (): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('showSpeedometer', !showSpeedometer)
+    })
+  }
+
+  const handleGaugeColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerGaugeColor', color)
+    })
+  }
+
+  const handleNeedleColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerNeedleColor', color)
+    })
+  }
+
+  const handleTickColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTickColor', color)
+    })
+  }
+
+  const handleTextColorChange = (color: string): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTextColor', color)
+    })
+  }
+
+  const handlePaddingAccept = (value: number | string): void => {
+    const num = typeof value === 'number' ? value : parseInt(value)
+    if (!isNaN(num)) {
+      setLocalPadding(String(num))
+      onSettingChange({
+        id,
+        config: propConfig.set('speedometerPadding', num)
+      })
+    }
+  }
+
+  const handleTextFontAccept = (value: string): void => {
+    setLocalFont(value)
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTextFont', value)
+    })
+  }
+
+  const handleTextSizeAccept = (value: number | string): void => {
+    const num = typeof value === 'number' ? value : parseInt(value)
+    if (!isNaN(num)) {
+      setLocalSize(String(num))
+      onSettingChange({
+        id,
+        config: propConfig.set('speedometerTextSize', num)
+      })
+    }
+  }
+
+  const toggleTextBold = (): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTextBold', !textBold)
+    })
+  }
+
+  const handleTickFontAccept = (value: string): void => {
+    setLocalTickFont(value)
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTickFont', value)
+    })
+  }
+
+  const handleTickSizeAccept = (value: number | string): void => {
+    const num = typeof value === 'number' ? value : parseInt(value)
+    if (!isNaN(num)) {
+      setLocalTickSize(String(num))
+      onSettingChange({
+        id,
+        config: propConfig.set('speedometerTickSize', num)
+      })
+    }
+  }
+
+  const toggleTickBold = (): void => {
+    onSettingChange({
+      id,
+      config: propConfig.set('speedometerTickBold', !tickBold)
     })
   }
 
@@ -214,6 +337,44 @@ const Setting = (props: SettingProps): React.ReactElement => {
         {placeholderEditable && <SettingRow flow='wrap' label={translate('placeholder')}>
           <TextArea aria-label={translate('placeholder')} defaultValue={placeholderText} onAcceptValue={handlePlaceholderTextChange}></TextArea>
         </SettingRow>}
+        <SettingRow flow='no-wrap' tag='label' label={translate('showSpeedometer')}>
+          <Switch checked={showSpeedometer} onChange={toggleSpeedometer} />
+        </SettingRow>
+        {showSpeedometer && <>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('gaugeColor')}>
+            <ThemeColorPicker value={gaugeColor} onChange={handleGaugeColorChange} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('needleColor')}>
+            <ThemeColorPicker value={needleColor} onChange={handleNeedleColorChange} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('tickColor')}>
+            <ThemeColorPicker value={tickColor} onChange={handleTickColorChange} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('tickFont')}>
+            <TextInput style={{ width: 120 }} value={localTickFont} onChange={(_e, v) => setLocalTickFont(v)} onAcceptValue={handleTickFontAccept} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('tickSize')}>
+            <TextInput style={{ width: 80 }} type='number' value={localTickSize} onChange={(_e, v) => setLocalTickSize(v)} onAcceptValue={handleTickSizeAccept} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' tag='label' label={translate('tickBold')}>
+            <Switch checked={tickBold} onChange={toggleTickBold} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('textColor')}>
+            <ThemeColorPicker value={textColor} onChange={handleTextColorChange} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('textFont')}>
+            <TextInput style={{ width: 120 }} value={localFont} onChange={(_e, v) => setLocalFont(v)} onAcceptValue={handleTextFontAccept} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('textSize')}>
+            <TextInput style={{ width: 80 }} type='number' value={localSize} onChange={(_e, v) => setLocalSize(v)} onAcceptValue={handleTextSizeAccept} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' label={translate('gaugePadding')}>
+            <TextInput style={{ width: 80 }} type='number' value={localPadding} onChange={(_e, v) => setLocalPadding(v)} onAcceptValue={handlePaddingAccept} />
+          </SettingRow>
+          <SettingRow className='mb-3' flow='no-wrap' tag='label' label={translate('textBold')}>
+            <Switch checked={textBold} onChange={toggleTextBold} />
+          </SettingRow>
+        </>}
 
       </SettingSection>
 
